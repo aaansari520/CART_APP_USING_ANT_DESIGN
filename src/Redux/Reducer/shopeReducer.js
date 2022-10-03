@@ -1,11 +1,11 @@
 import React from "react";
 import * as actionTypes from "../Actions/action";
 
-const cartFromLocalStorage = JSON.parse(localStorage.getItem("cart") || "[]");
-const wishFromLocalStorage = JSON.parse(localStorage.getItem("wish") || "[]");
-// const profileFromLocalStorage = JSON.parse(
-//   localStorage.getItem("profile") || "[]"
-// );
+const cartFromLocalStorage = JSON.parse(localStorage?.getItem("cart") || "[]");
+const wishFromLocalStorage = JSON.parse(localStorage?.getItem("wish") || "[]");
+const profileFromLocalStorage = JSON.parse(
+  localStorage?.getItem("profile") || "[]"
+);
 
 const initialState = {
   products: [
@@ -280,7 +280,7 @@ const initialState = {
   wishlist: wishFromLocalStorage,
   searchValue: "",
   currentItem: null,
-  profile: [],
+  profile: profileFromLocalStorage,
 };
 
 const shopeReducer = (state = initialState, action) => {
@@ -373,6 +373,13 @@ const shopeReducer = (state = initialState, action) => {
         ...state,
         cart: [],
       };
+
+    case actionTypes.EMPTY_WISH:
+      return {
+        ...state,
+        wishlist: [],
+      };
+
     case actionTypes.APPLY_SEARCH:
       return {
         ...state,

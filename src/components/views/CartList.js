@@ -3,10 +3,11 @@ import { connect } from "react-redux";
 import { Button, Col, Row, Modal } from "antd";
 import * as actionTypes from "../../Redux/Actions/action";
 import { Card } from "antd";
+import Modal2 from "../../validations/Modal2";
 
 const { Meta } = Card;
 
-const CartList = ({ cart, search, removeFromCart }) => {
+const CartList = ({ cart, search, removeFromCart, profile }) => {
   const [show, setShow] = useState(false);
   // console.log("Cart wala cart", cart);
 
@@ -34,42 +35,51 @@ const CartList = ({ cart, search, removeFromCart }) => {
           gutter={[16, 16]}
           className="media"
           style={{
-            margin: "auto",
             width: "100%",
-            justifyContent: "space-between",
+            justifyContent: "flex-start",
           }}
         >
-          {cart?.map((product) => {
-            return (
-              <Col
-                span={6}
-                // sm={8}
-                // xs={8}
-                // lg={7}
-                // xl={7}
-                // style={{ display: "flex", justifyContent: "center" }}
-              >
-                <Card hoverable style={{ width: "100%" }} key={product.id}>
-                  <div className="productImg">
-                    <img src={product.image} alt="example" />
-                  </div>
-                  <Meta
-                    title={product.title}
-                    description={product.description?.substring(0, 40)}
-                  />
+          {profile.length === 0 ? (
+            <Modal2 />
+          ) : (
+            cart
+              ?.filter((prod) =>
+                prod.title.toLowerCase().includes(search.toLowerCase())
+              )
+              .map((product) => {
+                return (
+                  <Col
+                    span={6}
+                    sm={8}
+                    xs={8}
+                    lg={7}
+                    xl={7}
+                    // style={{ justifyContent: "" }}
+                    key={product.id}
+                  >
+                    <Card hoverable style={{ width: "100%" }}>
+                      <div className="productImg">
+                        <img src={product.image} alt="example" />
+                      </div>
+                      <Meta
+                        title={product.title}
+                        description={product.description?.substring(0, 40)}
+                      />
 
-                  <div className="productButt">
-                    <Button
-                      type="primary"
-                      onClick={() => removeFromCart(product.id)}
-                    >
-                      REMOVE FROM CART
-                    </Button>
-                  </div>
-                </Card>
-              </Col>
-            );
-          })}
+                      <div className="productButt">
+                        <Button
+                          type="primary"
+                          onClick={() => removeFromCart(product.id)}
+                          // style={{ color: "red" }}
+                        >
+                          Remove
+                        </Button>
+                      </div>
+                    </Card>
+                  </Col>
+                );
+              })
+          )}
         </Row>
       </div>
     </div>
@@ -79,7 +89,8 @@ const CartList = ({ cart, search, removeFromCart }) => {
 const mapStateToProps = (store) => {
   return {
     cart: store.cart,
-    search: store.search,
+    search: store.searchValue,
+    profile: store.profile,
   };
 };
 const mapDispatchToProps = (dispatch) => {

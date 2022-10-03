@@ -3,6 +3,7 @@ import Image from "../../assets/images/cart.png";
 import { Link, useNavigate } from "react-router-dom";
 import { connect } from "react-redux";
 import {
+  CloseOutlined,
   LoginOutlined,
   LogoutOutlined,
   SearchOutlined,
@@ -10,18 +11,38 @@ import {
 import * as actionTypes from "../../Redux/Actions/action";
 import { Input } from "antd";
 
-const AppHeader = ({ cart, search, profile, deleteFromProfile }) => {
+const AppHeader = ({
+  cart,
+  search,
+  profile,
+  deleteFromProfile,
+  removeFromCart,
+  removeFromWish,
+}) => {
   const [value, setValue] = useState("");
   const navigate = useNavigate();
 
-  const submitHandler = (e, val) => {
-    e.preventDefault();
+  // const submitHandler = (e, val) => {
+  //   e.preventDefault();
 
-    console.log("value Of input", val);
-    search(val);
-    setValue("");
+  //   console.log("value Of input", val);
+
+  //   search(val);
+  //   setValue("");
+  // };
+
+  const removing = () => {
+    deleteFromProfile();
+    removeFromCart();
+    removeFromWish();
   };
 
+  const searchHandler = (e, val) => {
+    e.preventDefault();
+    console.log("value Of input", val);
+    setValue(val);
+    search(val);
+  };
   // const deleteFromProfile = () => {};
 
   return (
@@ -34,17 +55,27 @@ const AppHeader = ({ cart, search, profile, deleteFromProfile }) => {
         </div>
         <div className="searchWrapper">
           <form
-            onSubmit={(e) => submitHandler(e, value)}
+            // onSubmit={(e) => submitHandler(e, value)}
             className="searchForm"
           >
             <Input
               placeholder="Search here..."
               value={value}
+              // onChange={(e) => setValue(e.target.value)}
               onChange={(e) => setValue(e.target.value)}
+              onKeyUp={(e) => searchHandler(e, value)}
             />
-            <button className="searchButton" type="submit">
-              <SearchOutlined />
-            </button>
+            {/* <button className="searchButton" type="submit"> */}
+            {value && (
+              <button
+                className="searchButton"
+                type="button"
+                onClick={() => setValue("")}
+              >
+                {/* <SearchOutlined /> */}
+                <CloseOutlined />
+              </button>
+            )}
           </form>
           <div className="underline"></div>
         </div>
@@ -57,7 +88,7 @@ const AppHeader = ({ cart, search, profile, deleteFromProfile }) => {
           </div>
         ) : (
           <div className="logo">
-            <Link onClick={() => deleteFromProfile()} className="cartButton">
+            <Link to="/" onClick={() => removing()} className="cartButton">
               {/* <Button > */}
               <LogoutOutlined style={{ color: "red" }} />
               {/* </Button> */}
@@ -68,7 +99,7 @@ const AppHeader = ({ cart, search, profile, deleteFromProfile }) => {
         <div className="logo">
           <Link to="/cartlist" className="cartButton">
             <i
-              class="fa-solid fa-cart-shopping"
+              className="fa-solid fa-cart-shopping"
               style={{ color: "yellow" }}
             ></i>
             <span className="cartNumber">{cart.length}</span>
@@ -85,6 +116,7 @@ const mapStateToProps = (store) => {
     profile: store.profile,
   };
 };
+
 const mapDispatchToProps = (dispatch) => {
   return {
     search: (value) =>
@@ -96,6 +128,14 @@ const mapDispatchToProps = (dispatch) => {
       dispatch({
         type: actionTypes.DELETE_FROM_PROFILE,
         // payload: { id: id },
+      }),
+    removeFromWish: () =>
+      dispatch({
+        type: actionTypes.EMPTY_WISH,
+      }),
+    removeFromCart: () =>
+      dispatch({
+        type: actionTypes.EMPTY_CART,
       }),
   };
 };

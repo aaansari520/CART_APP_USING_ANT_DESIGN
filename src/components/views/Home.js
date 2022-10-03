@@ -1,10 +1,11 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Button, Col, Row, Modal } from "antd";
 import { Card } from "antd";
 import { connect } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import * as actionTypes from "../../Redux/Actions/action";
 import { HeartFilled, HeartOutlined } from "@ant-design/icons";
+import Modal2 from "../../validations/Modal2";
 
 const { Meta } = Card;
 
@@ -16,6 +17,8 @@ const Home = ({
   removeFromCart,
   addToWish,
   search,
+  profile,
+  removeFromWish,
 }) => {
   console.log("HomeProd", products);
   const navigate = useNavigate();
@@ -23,37 +26,62 @@ const Home = ({
   const gotoCart = () => {
     navigate("/cartlist");
   };
-  console.log("WISH", wish);
-  console.log("SEARCHHHH", search);
+  // console.log("WISH", wish);
+  // console.log("SEARCHHHH", search);
+
+  // useEffect(() => {
+  //   if (profile.length === 0) {
+  //     localStorage.removeItem("cart");
+  //   }
+  // });
+
+  // const [AllData, setAllData] = useState({
+  //   cart1: cart,
+  //   wish1: wish,
+  // });
+  // const { cart1, wish1 } = AllData;
+
+  // // Only get album by id when id changed
+  // useEffect(() => {
+  //   getAlbumById(albumID);
+  // }, [albumID, getAlbumById]);
 
   const success = (product) => {
-    Modal.success({
-      content: "Want to add item to wishlist? press yes or escape",
-      okText: "yes",
-      onOk: () => {
-        addToWish(product.id);
-      },
-    });
+    if (profile.length === 0) {
+      return <Modal2 />;
+    } else {
+      Modal.success({
+        content: "Want to add item to wishlist? press yes or escape",
+        okText: "yes",
+        onOk: () => {
+          addToWish(product.id);
+        },
+      });
+    }
   };
 
-  console.log(
-    "filtered Array...",
-    products.filter((prod) =>
-      prod.title.toLowerCase().includes(search.toLowerCase())
-    )
-  );
+  const addToCartFromHome = (product) => {
+    if (profile.length === 0) {
+      return <Modal2 />;
+    } else {
+      addToCart(product);
+    }
+  };
+
+  // console.log(
+  //   "filtered Array...",
+  //   products.filter((prod) =>
+  //     prod.title.toLowerCase().includes(search.toLowerCase())
+  //   )
+  // );
 
   return (
-    <div
-    // className="block featureBlock bgGrey"
-    // style={{ backgroundColor: "#d0dbd6" }}
-    >
+    <div>
       <div className="container-fluid">
         <Row
           gutter={[16, 16]}
           className="media"
           style={{
-            margin: "auto",
             width: "100%",
             justifyContent: "space-between",
           }}
@@ -79,20 +107,20 @@ const Home = ({
                   // lg={7}
                   // xl={7}
                   style={{ display: "flex", justifyContent: "center" }}
+                  key={product.id}
                 >
-                  <Card hoverable style={{ width: "100%" }} key={product.id}>
-                    {wish.find((e) => e.id === product.id) ? (
+                  <Card hoverable style={{ width: "100%" }}>
+                    {wish?.find((e) => e.id === product.id) ? (
                       <Button
                         className="Hover"
                         style={{ border: "none", color: "red" }}
-                        // onClick={() => success(product)}
                       >
                         <HeartFilled />
                       </Button>
                     ) : (
                       <Button
                         className="Hover"
-                        style={{ border: "none", color: "red" }}
+                        style={{ border: "none", color: "blue" }}
                         onClick={() => success(product)}
                       >
                         <HeartOutlined />
@@ -144,7 +172,7 @@ const Home = ({
 
                       <Button
                         type="primary"
-                        onClick={() => addToCart(product.id)}
+                        onClick={() => addToCartFromHome(product.id)}
                       >
                         ADD TO CART
                       </Button>
@@ -163,6 +191,7 @@ const mapStateToProps = (store) => {
   return {
     products: store.products,
     cart: store.cart,
+    profile: store.profile,
     wish: store.wishlist,
     search: store.searchValue,
   };
@@ -174,16 +203,13 @@ const mapDispatchToProps = (dispatch) => {
         type: actionTypes.ADD_TO_CART,
         payload: { id: id },
       }),
-    removeFromCart: (id) =>
-      dispatch({
-        type: actionTypes.DELETE_FROM_CART,
-        payload: { id: id },
-      }),
+    
     addToWish: (id) =>
       dispatch({
         type: actionTypes.ADD_TO_WISHLIST,
         payload: { id: id },
       }),
+    
   };
 };
 

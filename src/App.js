@@ -15,15 +15,17 @@ import { useEffect } from "react";
 import { connect } from "react-redux";
 import Login from "./validations/Login";
 import Modal1 from "./validations/Modal1";
+import ProtectedRoutes from "./protected/ProtectedRoutes";
+import * as actionTypes from "./Redux/Actions/action";
 
 const { Header, Content, Footer, Sider } = Layout;
 
-const App = ({ cart, wish, profile }) => {
+const App = ({ cart, wish, profile, clearCart, clearWish }) => {
   useEffect(() => {
     localStorage.setItem("cart", JSON.stringify(cart));
     localStorage.setItem("wish", JSON.stringify(wish));
-    // localStorage.setItem("profile", JSON.stringify(profile));
-  }, [cart, wish]);
+    localStorage.setItem("profile", JSON.stringify(profile));
+  }, [cart, wish, profile]);
 
   return (
     <Layout>
@@ -56,10 +58,11 @@ const Content1 = (profile) => {
     <div>
       <Routes>
         <Route path="/" element={<Modal1 />} />
-        <Route path="/home" element={<Home />}></Route>
-        <Route path="/wishlist" element={<Wishlist />}></Route>
-        <Route path="/cartlist" element={<Cartlist />}></Route>
-        <Route path="/profile" element={<Profile />}></Route>
+        <Route path="/home" element={<Home />} />
+
+        <Route exact path="/wishlist" element={<Wishlist />} />
+        <Route exact path="/cartlist" element={<Cartlist />} />
+        <Route exact path="/profile" element={<Profile />} />
       </Routes>
     </div>
   );
@@ -72,5 +75,6 @@ const mapStateToProps = (store) => {
     profile: store.profile,
   };
 };
+
 
 export default connect(mapStateToProps)(App);

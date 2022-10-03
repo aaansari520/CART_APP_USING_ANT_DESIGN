@@ -546,6 +546,13 @@ responsive
 .productButt button {
   font-size: 12px;
 }
+
+@media screen and (max-width: 768px) {
+  .productButt button {
+    font-size: 10px;
+  }
+}
+
 .productButt button i {
   color: #fff !important;
 }

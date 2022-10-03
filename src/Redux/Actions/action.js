@@ -14,6 +14,8 @@ export const UPDATE_QTY = "UPDATE_QTY";
 
 export const EMPTY_CART = "EMPTY_CART";
 
+export const EMPTY_WISH = "EMPTY_WISH";
+
 export const APPLY_SEARCH = "APPLY_SEARCH";
 
 export const ADD_PROFILE_DATA = "ADD_PROFILE_DATA";

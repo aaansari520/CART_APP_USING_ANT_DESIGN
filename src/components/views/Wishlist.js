@@ -4,10 +4,11 @@ import { Card } from "antd";
 import Image1 from "../../assets/images/modern-design.jpg";
 import { connect } from "react-redux";
 import * as actionTypes from "../../Redux/Actions/action";
+import Modal2 from "../../validations/Modal2";
 
 const { Meta } = Card;
 
-const Wishlist = ({ wish, removeFromWish }) => {
+const Wishlist = ({ wish, removeFromWish, profile, search }) => {
   // warning;
   const success = (product) => {
     Modal.success({
@@ -29,48 +30,48 @@ const Wishlist = ({ wish, removeFromWish }) => {
           gutter={[16, 16]}
           className="media"
           style={{
-            margin: "auto",
             width: "100%",
-            justifyContent: "space-between",
+            justifyContent: "flex-start",
           }}
         >
-          {wish?.map((product) => {
-            return (
-              <Col
-                span={6}
-                // sm={8}
-                // xs={8}
-                // lg={7}
-                // xl={7}
-                style={{ display: "flex", justifyContent: "center" }}
-              >
-                <Card hoverable style={{ width: "100%" }} key={product.id}>
-                  <Button
-                    className="Hover"
-                    style={{ border: "none", color: "red" }}
-                    // onClick={() => removeFromWish(product.id)}
-                    onClick={() => success(product)}
-                  >
-                    <i class="fa fa-heart"></i>
-                  </Button>
-                  {/* <div className="hide">
+          {profile.length === 0 ? (
+            <Modal2 />
+          ) : (
+            wish
+              ?.filter((prod) =>
+                prod.title.toLowerCase().includes(search.toLowerCase())
+              )
+              .map((product) => {
+                return (
+                  <Col span={6} sm={8} xs={8} lg={7} xl={7} key={product.id}>
+                    <Card hoverable style={{ width: "100%" }}>
+                      <Button
+                        className="Hover"
+                        style={{ border: "none", color: "red" }}
+                        // onClick={() => removeFromWish(product.id)}
+                        onClick={() => success(product)}
+                      >
+                        <i className="fa fa-heart"></i>
+                      </Button>
+                      {/* <div className="hide">
                     <p>removeFromWishList</p>
                   </div> */}
-                  <div className="productImg">
-                    <img src={product.image} alt="example" />
-                  </div>
-                  <Meta
-                    title={product.title}
-                    description={product.description?.substring(0, 40)}
-                  />
+                      <div className="productImg">
+                        <img src={product.image} alt="example" />
+                      </div>
+                      <Meta
+                        title={product.title}
+                        description={product.description?.substring(0, 40)}
+                      />
 
-                  <div className="productButt">
-                    <Button type="primary">Check Out</Button>
-                  </div>
-                </Card>
-              </Col>
-            );
-          })}
+                      <div className="productButt">
+                        <Button type="primary">Check Out</Button>
+                      </div>
+                    </Card>
+                  </Col>
+                );
+              })
+          )}
         </Row>
       </div>
     </div>
@@ -80,6 +81,8 @@ const Wishlist = ({ wish, removeFromWish }) => {
 const mapStateToProps = (store) => {
   return {
     wish: store.wishlist,
+    profile: store.profile,
+    search: store.searchValue,
   };
 };
 
