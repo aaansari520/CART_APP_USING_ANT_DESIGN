@@ -1,8 +1,8 @@
 import "./App.css";
-import "antd/dist/antd.css";
-import { BrowserRouter, Route, Routes, useNavigate } from "react-router-dom";
+
+import "antd/dist/antd.min.css";
+import { Route, Routes } from "react-router-dom";
 import {
-  AppFooter,
   Wishlist,
   Home,
   Profile,
@@ -13,13 +13,12 @@ import { Layout } from "antd";
 import AppHeader from "./components/common/Header";
 import { useEffect } from "react";
 import { connect } from "react-redux";
-import Login from "./validations/Login";
+
 import Modal1 from "./validations/Modal1";
-import ProtectedRoutes from "./protected/ProtectedRoutes";
-import * as actionTypes from "./Redux/Actions/action";
+
 import Checkout from "./components/views/Checkout";
 
-const { Header, Content, Footer, Sider } = Layout;
+const { Header, Content, Sider } = Layout;
 
 const App = ({ cart, wish, profile, clearCart, clearWish }) => {
   useEffect(() => {

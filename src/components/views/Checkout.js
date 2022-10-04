@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { LockOutlined, UserOutlined } from "@ant-design/icons";
+
 import { Button, Checkbox, Col, Form, Input, Row, Table } from "antd";
 import { connect } from "react-redux";
 
@@ -10,11 +10,13 @@ const Checkout = ({ profile, cart }) => {
 
   const objName = profile.map((name) => name.fullName).toString();
   const objEmail = profile.map((name) => name.email).toString();
-  const sub = cart.map((prod) => prod.title?.substring(0, 15));
 
   useEffect(() => {
     setTotal(
-      cart.reduce((accu, curr) => accu + Number(curr.price.toString()), 0)
+      cart.reduce(
+        (accu, curr) => accu + Number(curr.price.toFixed().toString()),
+        0
+      )
     );
   }, [cart]);
   const totalObj = {
