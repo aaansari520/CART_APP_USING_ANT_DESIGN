@@ -4,6 +4,7 @@ import { Button, Col, Row, Modal } from "antd";
 import * as actionTypes from "../../Redux/Actions/action";
 import { Card } from "antd";
 import Modal2 from "../../validations/Modal2";
+import { Link } from "react-router-dom";
 
 const { Meta } = Card;
 
@@ -74,6 +75,10 @@ const CartList = ({ cart, search, removeFromCart, profile }) => {
                         >
                           Remove
                         </Button>
+
+                        <Link to="/checkout" style={{ marginLeft: "10px" }}>
+                          <Button type="primary">Check Out</Button>
+                        </Link>
                       </div>
                     </Card>
                   </Col>

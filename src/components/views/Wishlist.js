@@ -5,6 +5,7 @@ import Image1 from "../../assets/images/modern-design.jpg";
 import { connect } from "react-redux";
 import * as actionTypes from "../../Redux/Actions/action";
 import Modal2 from "../../validations/Modal2";
+import { Link } from "react-router-dom";
 
 const { Meta } = Card;
 
@@ -65,7 +66,9 @@ const Wishlist = ({ wish, removeFromWish, profile, search }) => {
                       />
 
                       <div className="productButt">
-                        <Button type="primary">Check Out</Button>
+                        <Link to="/checkout">
+                          <Button type="primary">Check Out</Button>
+                        </Link>
                       </div>
                     </Card>
                   </Col>

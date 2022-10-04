@@ -17,6 +17,7 @@ import Login from "./validations/Login";
 import Modal1 from "./validations/Modal1";
 import ProtectedRoutes from "./protected/ProtectedRoutes";
 import * as actionTypes from "./Redux/Actions/action";
+import Checkout from "./components/views/Checkout";
 
 const { Header, Content, Footer, Sider } = Layout;
 
@@ -32,7 +33,7 @@ const App = ({ cart, wish, profile, clearCart, clearWish }) => {
       <Header style={{ backgroundColor: "black", height: "80px" }}>
         <AppHeader />
       </Header>
-      <div style={{ display: "flex" }}>
+      <div style={{ display: "flex", width: "100%" }}>
         <Sider style={{ position: "fixed", top: "100px", left: "0" }}>
           <SideBarMenu />
         </Sider>
@@ -55,16 +56,15 @@ const App = ({ cart, wish, profile, clearCart, clearWish }) => {
 const Content1 = (profile) => {
   console.log("Checing Profile", profile);
   return (
-    <div>
-      <Routes>
-        <Route path="/" element={<Modal1 />} />
-        <Route path="/home" element={<Home />} />
+    <Routes>
+      <Route path="/" element={<Modal1 />} />
+      <Route path="/home" element={<Home />} />
 
-        <Route exact path="/wishlist" element={<Wishlist />} />
-        <Route exact path="/cartlist" element={<Cartlist />} />
-        <Route exact path="/profile" element={<Profile />} />
-      </Routes>
-    </div>
+      <Route exact path="/wishlist" element={<Wishlist />} />
+      <Route exact path="/cartlist" element={<Cartlist />} />
+      <Route exact path="/profile" element={<Profile />} />
+      <Route exact path="/checkout" element={<Checkout />} />
+    </Routes>
   );
 };
 
@@ -75,6 +75,5 @@ const mapStateToProps = (store) => {
     profile: store.profile,
   };
 };
-
 
 export default connect(mapStateToProps)(App);

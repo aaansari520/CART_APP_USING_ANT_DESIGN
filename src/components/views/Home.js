@@ -23,28 +23,9 @@ const Home = ({
   console.log("HomeProd", products);
   const navigate = useNavigate();
 
-  const gotoCart = () => {
-    navigate("/cartlist");
-  };
-  // console.log("WISH", wish);
-  // console.log("SEARCHHHH", search);
-
-  // useEffect(() => {
-  //   if (profile.length === 0) {
-  //     localStorage.removeItem("cart");
-  //   }
-  // });
-
-  // const [AllData, setAllData] = useState({
-  //   cart1: cart,
-  //   wish1: wish,
-  // });
-  // const { cart1, wish1 } = AllData;
-
-  // // Only get album by id when id changed
-  // useEffect(() => {
-  //   getAlbumById(albumID);
-  // }, [albumID, getAlbumById]);
+  // const gotoCart = () => {
+  //   navigate("/cartlist");
+  // };
 
   const success = (product) => {
     if (profile.length === 0) {
@@ -86,14 +67,6 @@ const Home = ({
             justifyContent: "space-between",
           }}
         >
-          {/* .filter((val) => {
-              if (search === "") {
-                return val;
-              } else if (
-                val.title.toLowerCase().includes(search.toLowerCase())
-              )
-            }) */}
-
           {products
             .filter((prod) =>
               prod.title.toLowerCase().includes(search.toLowerCase())
@@ -102,10 +75,10 @@ const Home = ({
               return (
                 <Col
                   span={6}
-                  // sm={8}
-                  // xs={8}
-                  // lg={7}
-                  // xl={7}
+                  sm={8}
+                  xs={8}
+                  lg={7}
+                  xl={7}
                   style={{ display: "flex", justifyContent: "center" }}
                   key={product.id}
                 >
@@ -126,19 +99,7 @@ const Home = ({
                         <HeartOutlined />
                       </Button>
                     )}
-                    {/* <Button
-                    className="Hover"
-                    style={{ border: "none", color: "red" }}
-                    onClick={() => success(product)}
-                  >
-                    {wish?.find((prod) =>
-                      prod.id === product.id ? (
-                        <HeartFilled />
-                      ) : (
-                        <HeartOutlined />
-                      )
-                    )}
-                  </Button> */}
+
                     <div className="productImg">
                       <img src={product.image} alt="example" />
                     </div>
@@ -148,28 +109,6 @@ const Home = ({
                       className="truncate-1"
                     />
                     <div className="productButt">
-                      {/* {cart.includes(product) ? (
-                      <> */}
-                      {/* <Button
-                          type="primary"
-                          onClick={() => removeFromCart(product.id)}
-                        >
-                          REMOVE FROM CART
-                        </Button> */}
-
-                      {/* <Button type="primary" onClick={gotoCart}>
-                          Goto Cart
-                        </Button>
-                      </>
-                    ) : (
-                      <Button
-                        type="primary"
-                        onClick={() => addToCart(product.id)}
-                      >
-                        ADD TO CART
-                      </Button>
-                    )} */}
-
                       <Button
                         type="primary"
                         onClick={() => addToCartFromHome(product.id)}
@@ -203,13 +142,12 @@ const mapDispatchToProps = (dispatch) => {
         type: actionTypes.ADD_TO_CART,
         payload: { id: id },
       }),
-    
+
     addToWish: (id) =>
       dispatch({
         type: actionTypes.ADD_TO_WISHLIST,
         payload: { id: id },
       }),
-    
   };
 };
 
